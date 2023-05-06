@@ -1,0 +1,12 @@
+def add_image_to_post(post_id, image_path):
+    with open(image_path, 'rb') as image_file:
+        image_data = image_file.read()
+    media = service.media().upload(blogId=BLOG_ID, media_body=googleapiclient.http.MediaIoBaseUpload(io.BytesIO(image_data), mimetype='image/jpeg')).execute()
+    post = service.posts().get(blogId=BLOG_ID, postId=post_id).execute()
+    post['images'].append(media['url'])
+    return service.posts().update(blogId=BLOG_ID, postId=post_id, body=post).execute()
+
+def add_embedded_video_to_post(post_id, video_url):
+    post = service.posts().get(blogId=BLOG_ID, postId=post_id).execute()
+    post['content'] += f'<br /><iframe width="560" height="315" src="{video_url}" frameborder="0" allowfullscreen></iframe>'
+    return service.posts().update(blogId=BLOG_ID, postId=post_id, body=post).execute()
