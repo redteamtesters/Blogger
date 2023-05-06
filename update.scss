@@ -1,0 +1,8 @@
+def update_post(post_id, title, content):
+    post = {
+        'title': title,
+        'content': content,
+        'labels': ['example', 'automated'],
+        'status': 'PUBLISHED'
+    }
+    return service.posts().update(blogId=BLOG_ID, postId=post_id, body=post).execute()
